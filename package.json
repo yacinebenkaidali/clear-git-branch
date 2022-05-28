@@ -37,5 +37,8 @@
   "dependencies": {
     "commander": "^9.2.0",
     "execa": "^6.1.0"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.6.10"
   }
 }

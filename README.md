@@ -18,11 +18,13 @@ Here's a list of options that this CLI supports now
 
 - Use `-a` or `--all` if you want to delete all branches expect `master` & `main` (the flag `-a` has a higher priority then `-x` flag so please use one of them at a time).
 
+- Use `-a` or `--all` if you want to delete all branches expect `master`, `main` and `develop`.
+
 - Use `-f` or `--features` if you want to delete all branches that start with `feature/*`.
 
 - Use `-h` or `--hotfixes` if you want to delete all branches that start with `hotfix/*`.
 
-Note that the `-a` or `--all` has higher priority than all the other, so please use it carefully.
+**Note that the `-a` or `--all` flag has higher priority than all the other flags, so please use it carefully.**
 
 ## Licenses
 
