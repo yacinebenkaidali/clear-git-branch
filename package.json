@@ -2,7 +2,21 @@
   "name": "git-branch-clean",
   "version": "1.0.0",
   "description": "A CLI that cleans up the local/remote branches with options to exclude `develop` & `master/main` branches.",
-  "main": "src/index.js",
+  "exports": "./src/index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.16"
+  },
+  "bin": {
+    "git-branch-clean": "bin/git-branch-clean.js"
+  },
+  "files": [
+    "bin/",
+    "src/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "npm run test"
   },
