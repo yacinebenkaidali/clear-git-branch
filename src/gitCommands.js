@@ -1,5 +1,5 @@
 import { execaCommand } from "execa";
-
+import { generateCommand } from "./utils.js";
 /**
  * @description Deletes all branches except for `main` and `master`
  * This Option has higher priority than all the others.
@@ -10,9 +10,7 @@ import { execaCommand } from "execa";
  */
 
 async function deleteAllGitBranches() {
-  const { stdout } = await execaCommand(`git branch | grep -v "master|main"`, {
-    shell: true,
-  });
+  const { stdout } = await generateCommand("all");
   const branches = stdout
     .split("\n")
     .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""))
@@ -32,9 +30,7 @@ async function deleteAllGitBranches() {
  */
 
 async function deleteAllGitFeatureBranches() {
-  const { stdout } = await execaCommand(`git branch | grep "feature/*"`, {
-    shell: true,
-  });
+  const { stdout } = await generateCommand("features");
   const branches = stdout
     .split("\n")
     .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
@@ -57,9 +53,7 @@ async function deleteAllGitFeatureBranches() {
  */
 
 async function deleteAllGitHotFixBranches() {
-  const { stdout } = await execaCommand(`git branch | grep "hotfix/*"`, {
-    shell: true,
-  });
+  const { stdout } = await generateCommand("hotfixes");
   const branches = stdout
     .split("\n")
     .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
