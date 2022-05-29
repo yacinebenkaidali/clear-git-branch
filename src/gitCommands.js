@@ -1,76 +1,47 @@
 import { execaCommand } from "execa";
-import { deleteBranches, generateCommand } from "./utils.js";
-/**
- * @description Deletes all branches except for `main` and `master`
- * This Option has higher priority than all the others.
- * This is the command that this functions runs `git branch | grep -v "master\|main\" | xargs git branch -D`
- * @example git-branch-clean -a
- * @example git-branch-clean --all
- * @returns either the command as a promise or true if no branch that matches the constraint was found.
- */
 
-async function deleteAllGitBranches() {
-  const { stdout, failed } = await generateCommand("all");
-  if (!failed) {
-    const branches = stdout
-      .split("\n")
-      .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
-    return deleteBranches(branches);
+export const generateCommand = (cmd) => {
+  let branchFilteringCMD;
+  if (!["all", "features", "hotfixes", "clean"].includes(cmd)) {
+    throw new Error("Command not supported !");
   }
-}
+  switch (cmd) {
+    case "all":
+      branchFilteringCMD = `git branch | grep -v -E "master|main"`;
+      break;
 
-/**
- * @description Deletes all branches the matches the following pattern `feature/*`
- * This is the command that this functions runs `git branch | grep "feature/*" | xargs git branch -D`
- * @example git-branch-clean -f
- * @example git-branch-clean --features
- * @returns either the command as a promise or true if no branch that matches the constraint was found.
- */
+    case "features":
+      branchFilteringCMD = `git branch | grep -E "feature\/.*"`;
+      break;
 
-async function deleteAllGitFeatureBranches() {
-  const { stdout, failed } = await generateCommand("features");
-  if (!failed) {
-    const branches = stdout
-      .split("\n")
-      .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
+    case "hotfixes":
+      branchFilteringCMD = `git branch | grep -E "hotfix\/.*"`;
+      break;
 
-    return deleteBranches(branches);
+    case "clean":
+      branchFilteringCMD = `git branch | grep -v -E "master|main|develop|development"`;
+      break;
   }
-}
-
-/**
- * @description Deletes all branches the matches the following pattern `hotfix/*`
- *
- * This is the command that this functions runs `git branch | grep "hotfix/*" | xargs git branch -D`
- * @example ```sh
- * git-branch-clean -f
- * ```
- * @example git-branch-clean --hotfixes
- * @returns either the command as a promise or true if no branch that matches the constraint was found.
- */
-
-async function deleteAllGitHotFixBranches() {
-  const { stdout, failed } = await generateCommand("hotfixes");
-  if (!failed) {
-    const branches = stdout
-      .split("\n")
-      .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
-
-    return deleteBranches(branches);
-  }
-}
-async function cleanAllGitBranches() {
-  const { stdout, failed } = await generateCommand("clean");
-  if (!failed) {
-    const branches = stdout
-      .split("\n")
-      .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
-    return deleteBranches(branches);
-  }
-}
-export {
-  deleteAllGitBranches,
-  deleteAllGitFeatureBranches,
-  deleteAllGitHotFixBranches,
-  cleanAllGitBranches,
+  //use the identity function to resolve the errors and handle them through the failed flag
+  return execaCommand(branchFilteringCMD, { shell: true }).catch((err) => err);
 };
+
+export const deleteBranches = (branches, exceptBranches) => {
+  const branchesToDelete = branches.filter(
+    (branch) => !exceptBranches.includes(branch)
+  );
+  return branchesToDelete.length
+    ? execaCommand(`git branch -D ${branchesToDelete.join(" ")}`)
+    : true;
+};
+
+async function deleteGitBranches(cmd, exceptBranches = []) {
+  const { stdout, failed } = await generateCommand(cmd);
+  if (!failed) {
+    const branches = stdout
+      .split("\n")
+      .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
+    return deleteBranches(branches, exceptBranches);
+  }
+}
+export { deleteGitBranches };

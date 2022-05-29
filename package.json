@@ -1,7 +1,7 @@
 {
   "name": "git-branch-clean",
   "version": "1.0.0",
-  "description": "A CLI that cleans up the local/remote branches with options to exclude `develop` & `master/main` branches.",
+  "description": "A CLI that cleans up the local branches with options to exclude `develop` & `master/main` branches.",
   "exports": "./src/index.js",
   "type": "module",
   "engines": {
@@ -38,6 +38,13 @@
     "commander": "^9.2.0",
     "execa": "^6.1.0"
   },
+  "contributors": [
+    {
+      "name": "Yacine BENKAIDALI",
+      "email": "yacinebenkaidali@gmail.com",
+      "url": "https://github.com/yacinebenkaidali/"
+    }
+  ],
   "devDependencies": {
     "jsdoc": "^3.6.10"
   }

@@ -1,10 +1,5 @@
 import { program } from "commander";
-import {
-  cleanAllGitBranches,
-  deleteAllGitBranches,
-  deleteAllGitFeatureBranches,
-  deleteAllGitHotFixBranches,
-} from "./gitCommands.js";
+import { deleteGitBranches } from "./gitCommands.js";
 
 // git-branch-clean clean --except -x --all -a -c --clean
 program
@@ -39,17 +34,17 @@ async function cli() {
   const options = program.opts();
   try {
     if (options.all) {
-      await deleteAllGitBranches();
+      await deleteGitBranches("all");
       return;
     }
     if (options.features) {
-      await deleteAllGitFeatureBranches();
+      await deleteGitBranches("features", options.except);
     }
     if (options.hotfixes) {
-      await deleteAllGitHotFixBranches();
+      await deleteGitBranches("hotfixes", options.except);
     }
     if (options.clean) {
-      await cleanAllGitBranches();
+      await deleteGitBranches("clean", options.except);
     }
   } catch (error) {
     console.log(error.message);
