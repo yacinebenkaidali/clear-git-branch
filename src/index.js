@@ -1,12 +1,17 @@
 import { program } from "commander";
 import {
+  cleanAllGitBranches,
   deleteAllGitBranches,
   deleteAllGitFeatureBranches,
   deleteAllGitHotFixBranches,
 } from "./gitCommands.js";
+
 // git-branch-clean clean --except -x --all -a -c --clean
-// we won't support the except flag on the first release
 program
+  .name("git-branch-clean")
+  .description(
+    "A CLI that cleans up the local branches with options to exclude develop & master/main branches."
+  )
   .option(
     "-x, --except <string>",
     "list of branch names that you want to exclude, must be seperated by a comma",
@@ -42,6 +47,9 @@ async function cli() {
     }
     if (options.hotfixes) {
       await deleteAllGitHotFixBranches();
+    }
+    if (options.clean) {
+      await cleanAllGitBranches();
     }
   } catch (error) {
     console.log(error.message);

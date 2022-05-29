@@ -1,13 +1,13 @@
 import { execaCommand } from "execa";
-const possibleCommands = ["all", "features", "hotfixes", "clean"];
+
 export const generateCommand = (cmd) => {
   let generatedCommand;
-  if (!possibleCommands.includes(cmd)) {
+  if (!["all", "features", "hotfixes", "clean"].includes(cmd)) {
     throw new Error("Command not supported !");
   }
   switch (cmd) {
     case "all":
-      generatedCommand = `git branch | grep -v "master\|main"`;
+      generatedCommand = `git branch | grep -v -E "master|main"`;
       break;
 
     case "features":
@@ -19,9 +19,12 @@ export const generateCommand = (cmd) => {
 
       break;
     case "clean":
-      generatedCommand = `git branch | grep -v "master\|main\|develop\|development"`;
+      generatedCommand = `git branch | grep -v -E "master|main|develop|development"`;
 
       break;
   }
-  return execaCommand(generatedCommand, { shell: true });
+  //use the identity function to resolve the errors and handle them manually
+  return execaCommand(generatedCommand, { shell: true }).catch((err) => err);
 };
+export const deleteBranches = (branches) =>
+  branches.length ? execaCommand(`git branch -D ${branches.join(" ")}`) : true;

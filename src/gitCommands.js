@@ -1,5 +1,5 @@
 import { execaCommand } from "execa";
-import { generateCommand } from "./utils.js";
+import { deleteBranches, generateCommand } from "./utils.js";
 /**
  * @description Deletes all branches except for `main` and `master`
  * This Option has higher priority than all the others.
@@ -10,15 +10,13 @@ import { generateCommand } from "./utils.js";
  */
 
 async function deleteAllGitBranches() {
-  const { stdout } = await generateCommand("all");
-  const branches = stdout
-    .split("\n")
-    .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""))
-    .filter((branch) => !new RegExp(/master|main/g).test(branch));
-  if (branches.length) {
-    return execaCommand(`git branch -D ${branches.join(" ")}`);
+  const { stdout, failed } = await generateCommand("all");
+  if (!failed) {
+    const branches = stdout
+      .split("\n")
+      .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
+    return deleteBranches(branches);
   }
-  return true;
 }
 
 /**
@@ -30,15 +28,14 @@ async function deleteAllGitBranches() {
  */
 
 async function deleteAllGitFeatureBranches() {
-  const { stdout } = await generateCommand("features");
-  const branches = stdout
-    .split("\n")
-    .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
+  const { stdout, failed } = await generateCommand("features");
+  if (!failed) {
+    const branches = stdout
+      .split("\n")
+      .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
 
-  if (branches.length) {
-    return execaCommand(`git branch -D ${branches.join(" ")}`);
+    return deleteBranches(branches);
   }
-  return true;
 }
 
 /**
@@ -53,18 +50,27 @@ async function deleteAllGitFeatureBranches() {
  */
 
 async function deleteAllGitHotFixBranches() {
-  const { stdout } = await generateCommand("hotfixes");
-  const branches = stdout
-    .split("\n")
-    .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
+  const { stdout, failed } = await generateCommand("hotfixes");
+  if (!failed) {
+    const branches = stdout
+      .split("\n")
+      .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
 
-  if (branches.length) {
-    return execaCommand(`git branch -D ${branches.join(" ")}`);
+    return deleteBranches(branches);
   }
-  return true;
+}
+async function cleanAllGitBranches() {
+  const { stdout, failed } = await generateCommand("clean");
+  if (!failed) {
+    const branches = stdout
+      .split("\n")
+      .map((branch) => branch.replace(new RegExp(/\*|\s/g), ""));
+    return deleteBranches(branches);
+  }
 }
 export {
   deleteAllGitBranches,
   deleteAllGitFeatureBranches,
   deleteAllGitHotFixBranches,
+  cleanAllGitBranches,
 };
