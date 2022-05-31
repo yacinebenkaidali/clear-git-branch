@@ -1,6 +1,6 @@
 import { execaCommand } from "execa";
 
-export const generateCommand = (cmd) => {
+const generateCommand = (cmd) => {
   let branchFilteringCMD;
   if (!["all", "features", "hotfixes", "clean"].includes(cmd)) {
     throw new Error("Command not supported !");
@@ -26,7 +26,7 @@ export const generateCommand = (cmd) => {
   return execaCommand(branchFilteringCMD, { shell: true }).catch((err) => err);
 };
 
-export const deleteBranches = (branches, exceptBranches) => {
+const deleteBranches = (branches, exceptBranches) => {
   const branchesToDelete = branches.filter(
     (branch) => !exceptBranches.includes(branch)
   );
@@ -44,4 +44,4 @@ async function deleteGitBranches(cmd, exceptBranches = []) {
     return deleteBranches(branches, exceptBranches);
   }
 }
-export { deleteGitBranches };
+export { deleteGitBranches, generateCommand, deleteBranches };

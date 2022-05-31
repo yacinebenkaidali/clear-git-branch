@@ -1,13 +1,13 @@
-# git-branch-clean
+# clear-git-branch
 
 Sometime your local envirement will get a little bit slower due to the number of branches that you may have created while working on a project, this package helps you clean up your local environment from unused branches git branches.
 
 ## Installation & Usage
 
 ```bash
-npx git-branch-clean --help
+npx clear-git-branch --help
 # or
-npm install -g git-branch-clean
+npm install -g clear-git-branch
 ```
 
 ## Features
@@ -30,15 +30,15 @@ Here's a list of options that this CLI supports now
 
 ```bash
 # to get the list of options
-npx git-branch-clean --help
+npx clear-git-branch --help
 # to delete all feature/* branches
-npx git-branch-clean -f
+npx clear-git-branch -f
 # to delete all hotfix/* branches
-npx git-branch-clean -h
+npx clear-git-branch -h
 # to delete all branches
-npx git-branch-clean -a
+npx clear-git-branch -a
 # to clean all branches
-npx git-branch-clean -c
+npx clear-git-branch -c
 ```
 
 ## Licenses

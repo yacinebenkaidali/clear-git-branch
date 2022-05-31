@@ -91,3 +91,5 @@ sw.*
 data
 
 out
+
+.npmrc

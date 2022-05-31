@@ -1,5 +1,5 @@
 {
-  "name": "git-branch-clean",
+  "name": "clear-git-branch",
   "version": "1.0.0",
   "description": "A CLI that cleans up the local branches with options to exclude `develop` & `master/main` branches.",
   "exports": "./src/index.js",
@@ -8,7 +8,7 @@
     "node": ">=14.16"
   },
   "bin": {
-    "git-branch-clean": "bin/git-branch-clean.js"
+    "clear-git-branch": "bin/clear-git-branch.js"
   },
   "files": [
     "bin/",
