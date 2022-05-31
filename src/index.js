@@ -1,9 +1,10 @@
 import { program } from "commander";
 import { deleteGitBranches } from "./gitCommands.js";
 
-// git-branch-clean clean --except -x --all -a -c --clean
 program
   .name("git-branch-clean")
+  .usage("[global options]")
+  .summary("Cleans up local git branches")
   .description(
     "A CLI that cleans up the local branches with options to exclude develop & master/main branches."
   )
@@ -27,6 +28,12 @@ program
     "-h, --hotfixes",
     "removes all branches that start with hotfix/*",
     false
+  )
+  .addHelpText(
+    "afterAll",
+    `
+Usage example:
+$ git-branch-clean -c`
   );
 
 async function cli() {
@@ -45,6 +52,11 @@ async function cli() {
     }
     if (options.clean) {
       await deleteGitBranches("clean", options.except);
+    }
+    if (
+      !(options.all || options.clean || options.features || options.hotfixes)
+    ) {
+      program.help();
     }
   } catch (error) {
     console.log(error.message);
