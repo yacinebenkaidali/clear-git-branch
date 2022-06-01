@@ -1,6 +1,6 @@
 {
   "name": "clear-git-branch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A CLI that cleans up the local branches with options to exclude `develop` & `master/main` branches.",
   "exports": "./src/index.js",
   "type": "module",
