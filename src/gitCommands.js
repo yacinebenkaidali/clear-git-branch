@@ -44,4 +44,12 @@ async function deleteGitBranches(cmd, exceptBranches = []) {
     return deleteBranches(branches, exceptBranches);
   }
 }
-export { deleteGitBranches, generateCommand, deleteBranches };
+async function cleanUpRemoteBranches(remote) {
+  return execaCommand(`git remote prune ${remote}`, { shell: true });
+}
+export {
+  deleteGitBranches,
+  generateCommand,
+  deleteBranches,
+  cleanUpRemoteBranches,
+};
