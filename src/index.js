@@ -1,10 +1,8 @@
-import { program } from "commander";
-import { deleteGitBranches } from "./gitCommands.js";
-
+import { Command } from "commander";
+import { cleanUpRemoteBranches, deleteGitBranches } from "./gitCommands.js";
+const program = new Command();
 program
-  .name("git-branch-clean")
-  .usage("[global options]")
-  .summary("Cleans up local git branches")
+  .command("local", { isDefault: true })
   .description(
     "A CLI that cleans up the local branches with options to exclude develop & master/main branches."
   )
@@ -34,14 +32,11 @@ program
     `
 Usage example:
 $ git-branch-clean -c`
-  );
-
-async function cli() {
-  program.parse();
-  const options = program.opts();
-  try {
+  )
+  .action(async (options) => {
     if (options.all) {
       await deleteGitBranches("all");
+      //the a flag has higher priority than all the other flags
       return;
     }
     if (options.features) {
@@ -53,11 +48,25 @@ async function cli() {
     if (options.clean) {
       await deleteGitBranches("clean", options.except);
     }
-    if (
-      !(options.all || options.clean || options.features || options.hotfixes)
-    ) {
-      program.help();
-    }
+  });
+
+program
+  .command("remote")
+  .description("Cleans up your remote branches")
+  .argument("<remote>", `remote's name`)
+  .addHelpText(
+    "afterAll",
+    `
+Usage example:
+$ git-branch-clean remote origin`
+  )
+  .action(async (options) => {
+    await cleanUpRemoteBranches(options);
+  });
+
+async function cli() {
+  try {
+    program.parse();
   } catch (error) {
     console.log(error.message);
   }

@@ -24,6 +24,12 @@ Here's a list of options that this CLI supports now
 
 - Use `-x` or `--except` if you want to exclude a list of branches from being deleted, seperate them with a comma.
 
+- If you want to clear your remote branches simply run
+
+```sh
+clear-git-branch remote ${REMOTE} #REMOTE is the remote that you want to clean
+```
+
 **Note that the `-a` or `--all` flag has higher priority than all the other flags, so please use it carefully.**
 
 ## Examples
