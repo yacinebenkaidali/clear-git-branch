@@ -18,9 +18,9 @@ Here's a list of options that this CLI supports now
 
 - Use `-c` or `--clean` if you want to delete all branches except `master`,`main`, `develop` & `development`.
 
-- Use `-f` or `--features` if you want to delete all branches that start with `feature/*`.
+- Use `-f` or `--features` if you want to delete all branches that start with `[fF]eature/*` or `[fF]eatures/*`.
 
-- Use `-h` or `--hotfixes` if you want to delete all branches that start with `hotfix/*`.
+- Use `-h` or `--hotfixes` if you want to delete all branches that start with `[hH]otfix/*` or `[hH]otfixs/*`.
 
 - Use `-x` or `--except` if you want to exclude a list of branches from being deleted, seperate them with a comma.
 
