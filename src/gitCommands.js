@@ -11,11 +11,11 @@ const generateCommand = (cmd) => {
       break;
 
     case "features":
-      branchFilteringCMD = `git branch | grep -E "feature\/.*"`;
+      branchFilteringCMD = `git branch | grep -E "[Ff]eature(s)?\/.*"`;
       break;
 
     case "hotfixes":
-      branchFilteringCMD = `git branch | grep -E "hotfix\/.*"`;
+      branchFilteringCMD = `git branch | grep -E "[Hh]otfix(s)?\/.*"`;
       break;
 
     case "clean":
