@@ -41,13 +41,17 @@ $ git-branch-clean -c`
     }
     if (options.features) {
       await deleteGitBranches("features", options.except);
+      return;
     }
     if (options.hotfixes) {
       await deleteGitBranches("hotfixes", options.except);
+      return;
     }
     if (options.clean) {
       await deleteGitBranches("clean", options.except);
+      return;
     }
+    console.log(program.help());
   });
 
 program
